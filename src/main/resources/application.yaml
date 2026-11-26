@@ -1,0 +1,63 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: smart-fitness
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:smart_fitness}?useSSL=false&serverTimezone=UTC
+    username: ${DB_USERNAME:}
+    password: ${DB_PASSWORD:}
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 10
+        min-idle: 1
+        time-between-eviction-runs: 10s
+    database: ${REDIS_DATABASE:0}
+  jackson:
+    default-property-inclusion: non_null # JSON处理时忽略非空字段
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:}
+    password: ${RABBITMQ_PASSWORD:}
+    virtual-host: ${RABBITMQ_VIRTUAL_HOST:/}
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    listener:
+      simple:
+        concurrency: 1
+        max-concurrency: 4
+        prefetch: 1
+        auto-startup: true
+        default-requeue-rejected: false
+    template:
+      mandatory: true
+smartfitness:
+  appointment:
+    confirm-timeout-ms: ${APPOINTMENT_CONFIRM_TIMEOUT_MS:3000}
+  cache:
+    test-item:
+      ttl-minutes: ${TEST_ITEM_CACHE_TTL_MINUTES:30}
+      jitter-minutes: ${TEST_ITEM_CACHE_JITTER_MINUTES:5}
+      null-ttl-minutes: ${TEST_ITEM_CACHE_NULL_TTL_MINUTES:2}
+      lock-wait-seconds: ${TEST_ITEM_CACHE_LOCK_WAIT_SECONDS:2}
+      lock-lease-seconds: ${TEST_ITEM_CACHE_LOCK_LEASE_SECONDS:10}
+  rate-limit:
+    login:
+      window-ms: ${LOGIN_RATE_WINDOW_MS:60000}
+      user-limit: ${LOGIN_USER_RATE_LIMIT:8}
+      ip-limit: ${LOGIN_IP_RATE_LIMIT:30}
+    appointment:
+      window-ms: ${APPOINTMENT_RATE_WINDOW_MS:1000}
+      user-limit: ${APPOINTMENT_USER_RATE_LIMIT:3}
+mybatis-plus:
+  type-aliases-package: com.smartfitness.entity # 别名扫描包
+logging:
+  level:
+    com.smartfitness: debug

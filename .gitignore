@@ -1,0 +1,26 @@
+target/
+.m2-repository/
+.integration/
+.idea/
+*.iml
+.vscode/
+*.log
+logs/
+tmp/
+temp/
+*.tmp
+application-local.yaml
+application-local.yml
+.env
+.env.*
+!.env.example
+
+# Local middleware runtimes and disposable integration data
+.erlang27/
+.mysql-*/
+.redis-*/
+.rabbitmq-*/
+.phase*-mysql/
+.phase*-mysql.ini
+.phase*-app.log
+erl_crash.dump
